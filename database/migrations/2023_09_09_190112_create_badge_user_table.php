@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('achievements', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name')->unique();
-            $table->string('type');
-            $table->bigInteger('points')->default(1);
+        Schema::create('badge_user', function (Blueprint $table) {
+            $table->bigInteger('user_id')->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->bigInteger('bage_id')->unsigned()->index();
+            $table->foreign('bage_id')->references('id')->on('badges');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('achievements');
+        Schema::dropIfExists('badge_user');
     }
 };

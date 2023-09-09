@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Events\CommentWritten;
 
 class User extends Authenticatable
 {
@@ -51,5 +52,17 @@ class User extends Authenticatable
     public function achievements()
     {
         return $this->belongsToMany(Achievement::class);
+    }
+
+    public function badges(){
+        return $this->belongsToMany(Badge::class);
+    }
+
+    public function addComments($size)
+    {
+        for ($i = 1; $i <= $size; $i++) {
+            $comment = Comment::factory()->create(['user_id' => $this->id]);
+            CommentWritten::dispatch($comment);
+        }
     }
 }

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_achievements', function (Blueprint $table) {
+        Schema::create('achievement_user', function (Blueprint $table) {
             $table->bigInteger('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users');
             $table->bigInteger('achievement_id')->unsigned()->index();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_achievements');
+        Schema::dropIfExists('achievement_user');
     }
 };
