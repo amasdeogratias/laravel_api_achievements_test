@@ -26,17 +26,19 @@ class HandleAchievementUnlocked
     {
         $user = $event->user;
         $achievement_name = $event->achievement_name;
-
         $achievement = Achievement::where('name', $achievement_name)->first();
-        if ($user->hasAchieved($achievement)) {
-            return;
-        }
-        $user->unlock($achievement);
-        $badge = $this->getBadgeForUser($user);
 
-        if ($badge) {
-            $user->unlockBadge($badge);
-            event(new BadgeUnlocked($badge, $user));
+        $user = User::find($user);
+       
+        $data = DB::table('achievement_user')->
+            where('user_id', $user->id)->
+               where('achievement_id', $achievement->id)->exists();
+
+        if(!$data){
+            $user->achievements()->save($achievement);
+            $user->save();
+            event(new BadgeUnlocked($user,$achievement_name));
         }
     }
+
 }
