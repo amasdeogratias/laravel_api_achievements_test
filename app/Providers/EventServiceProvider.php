@@ -3,10 +3,13 @@
 namespace App\Providers;
 
 use App\Events\AchievementUnlocked;
+use App\Listeners\HandleAchievementUnlocked;
+use App\Events\BadgeUnlocked;
+use App\Listeners\HandleBadgeUnlocked;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use App\Listeners\HandleAchievementUnlocked;
+
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +21,10 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         AchievementUnlocked::class => [
             HandleAchievementUnlocked::class,
+        ],
+
+        BadgeUnlocked::class => [
+            HandleBadgeUnlocked::class,
         ],
     ];
 
