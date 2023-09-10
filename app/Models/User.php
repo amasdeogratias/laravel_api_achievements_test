@@ -8,10 +8,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Events\CommentWritten;
+use App\Traits\AchievementUnlockHandler;
+use App\Events\LessonWatched;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, AchievementUnlockHandler;
 
     /**
      * The attributes that are mass assignable.
@@ -63,6 +65,26 @@ class User extends Authenticatable
         for ($i = 1; $i <= $size; $i++) {
             $comment = Comment::factory()->create(['user_id' => $this->id]);
             CommentWritten::dispatch($comment);
+        }
+    }
+
+    public function watched()
+    {
+        return $this->belongsToMany(Lesson::class)->wherePivot('watched', true);
+    }
+    public function lessons()
+    {
+        return $this->belongsToMany(Lesson::class);
+    }
+
+    public function completeLessons($size)
+    {
+        for ($i = 1; $i <= $size; $i++) {
+            $lesson = Lesson::findOrFail($i);
+            $this->lessons()->attach($lesson->id, [
+                'watched' => 1,
+            ]);
+            LessonWatched::dispatch($lesson, $this);
         }
     }
 }
