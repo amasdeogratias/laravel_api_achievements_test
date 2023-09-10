@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\BadgeUnlocked;
+use Illuminate\Support\Facades\DB;
 
 
 class HandleBadgeUnlocked
@@ -28,7 +29,6 @@ class HandleBadgeUnlocked
         $user = $event->user;
 
         $badge = Badge::where('name', $badge_name)->first();
-        $user = User::find($user);
 
         $data = DB::table('badge_user')->
         where('user_id', $user->id)->

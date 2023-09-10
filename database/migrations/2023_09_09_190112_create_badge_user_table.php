@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('badge_user', function (Blueprint $table) {
             $table->bigInteger('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->bigInteger('bage_id')->unsigned()->index();
-            $table->foreign('bage_id')->references('id')->on('badges');
+            $table->bigInteger('badge_id')->unsigned()->index();
+            $table->foreign('badge_id')->references('id')->on('badges');
             $table->timestamps();
         });
     }

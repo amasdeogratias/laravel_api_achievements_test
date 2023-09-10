@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('badges', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->bigInteger('points');
             $table->timestamps();
         });
     }

@@ -8,7 +8,7 @@ use Illuminate\Queue\SerializesModels;
 
 class BadgeUnlocked
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, SerializesModels;
 
     public $badge_name;
     public $user;

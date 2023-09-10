@@ -9,7 +9,7 @@ class Badge extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'points'];
 
     public function users(){
         return $this->belongsToMany(User::class);
