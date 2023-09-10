@@ -7,6 +7,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use App\Events\AchievementUnlocked;
 use App\Events\BadgeUnlocked;
 use App\Models\Achievement;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 
 class HandleAchievementUnlocked
@@ -28,11 +30,10 @@ class HandleAchievementUnlocked
         $achievement_name = $event->achievement_name;
         $achievement = Achievement::where('name', $achievement_name)->first();
 
-        $user = User::find($user);
        
-        $data = DB::table('achievement_user')->
-            where('user_id', $user->id)->
-               where('achievement_id', $achievement->id)->exists();
+        $data = DB::table('achievement_user')
+                ->where('user_id', $user->id)
+                ->where('achievement_id', $achievement->id)->exists();
 
         if(!$data){
             $user->achievements()->save($achievement);

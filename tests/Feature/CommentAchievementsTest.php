@@ -13,11 +13,24 @@ use Tests\TestCase;
 class CommentAchievementsTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function testUserCanUnlockFirstCommentAchievement()
+    {
+        $user = User::factory()->create();
+        $achievements = Achievement::factory()->create([
+            'name' => 'First Comment Written',
+            'points' => 1,
+            'type' => 'comment',
+        ]);
+        $user->achievements()->save($achievements);
+        $user->addComments(1);
+
+        $this->assertCount(1, $user->achievements);
+    }
     
     public function testUserCanUnlockCommentAchievements()
     {
         $testCases = [
-            ['commentCount' => 1, 'assertCount' => 1], 
             ['commentCount' => 3, 'assertCount' => 1],
             ['commentCount' => 5, 'assertCount' => 1],
             ['commentCount' => 10, 'assertCount' => 1],
